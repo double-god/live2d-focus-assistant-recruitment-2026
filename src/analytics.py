@@ -34,3 +34,30 @@ def report(connection):
     # Baseline report intentionally exposes only the basic counters. Date-range
     # filtering, streaks and a readable text rendering are left for follow-up work.
     return summary(connection)
+
+
+
+    def seconds_to_cn(seconds):
+        """
+        E03:将秒数转为中文时长字符串
+        :param seconds:输入的秒，必须为非负整数
+        :return:中文格式化后的时常
+        """
+        if isinstance(seconds,bool):
+            raise TypeError("不允许布尔类型")
+        if not isinstance(seconds,int):
+            raise TypeError("输入必须是整数")
+        if seconds < 0:
+            raise ValueError("输入秒数不能为负")
+        h,remain = divmod(seconds,3600)
+        m,s = divmod(remain,60)
+        parts = []
+        if h > 0:
+            parts.append(f"{h}小时")
+        if m > 0:
+            parts.append(f"{m}分钟")
+        if s > 0:
+            parts.append(f"{s}秒")
+        if len(parts) == 0:
+            return "0秒"
+        return"".join(parts)    
