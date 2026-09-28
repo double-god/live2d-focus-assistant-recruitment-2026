@@ -7,6 +7,7 @@ from src import repositories
 from src.analytics import report
 from src.cleanup_service import cleanup_stale_sessions
 from src.import_export import export_json
+from src.presentation import format_session_summary
 
 def main():
     parser = argparse.ArgumentParser(description="Live2D 专注助手历史工具")
@@ -18,7 +19,8 @@ def main():
         db = get_db()
         if args.command == "history":
             rows = repositories.all_sessions(db)
-            for row in rows: print(f"#{row['id']} [{row['status']}] {row['task_text']}")
+            for row in rows:
+                print(format_session_summary(row))
         elif args.command == "summary":
             import json; print(json.dumps(report(db), ensure_ascii=False, indent=2))
         elif args.command == "export":
